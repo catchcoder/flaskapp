@@ -1,5 +1,5 @@
 """
-Raspberry Pi, Outpus controlled by web interface (python,flask)
+Raspberry Pi, outputs controlled by web interface (python,flask)
 """
 
 from flask import Flask, render_template, request, redirect
