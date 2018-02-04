@@ -7,6 +7,11 @@
       <h2>LED on/off</h2>
       <a href="{{ url_for('ledon') }}" class="btn btn-primary">On</a>
       <a href="{{ url_for('ledoff') }}" class="btn btn-secondary">Off</a>
+        {% if led_state %}
+        <p>LED ON</p>
+        {% else %}
+        <p>LED OFF</p>
+        {% endif %}
     </div>
 
 
