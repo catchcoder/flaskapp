@@ -4,7 +4,7 @@ Info for sysfs: https://www.kernel.org/doc/Documentation/gpio/sysfs.txt
 https://elinux.org/RPi_Low-level_peripherals
 """
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import time
 import os
 # import sqlite3
@@ -35,25 +35,22 @@ GPIO.setup(17, GPIO.OUT)
 GPIO.setup(2, GPIO.OUT)
 GPIO.output(2, False)
 
+# ledpath = "/sys/class/gpio/gpio17/value"
+ledpath = "/home/chris/repos/flaskapp/value"
 
 def check_led_state(pin):
     """
     Checks and returns LED output state
     """
     try:
-        with open("/sys/class/gpio/gpio17/value") as inp:
+        with open(ledpath) as inp:
             status = inp.read(1)
+            print ("inp = {}".format(status))
     except Exception:
-        status = '0'
-    """
-    if status == '1':
-        status = True
-    else:
-        status = False
-    """
+        status = 0
 
-    print ('Pin state {}'.format(status))
-    return True if status == '1' else False
+
+    return True if status == "1" else False
 
 
 @app.route('/')
@@ -65,13 +62,15 @@ def index():
 @app.route('/ledon')
 def ledon():
     GPIO.output(17, True)
-    return render_template('index.html', led_state=check_led_state(17))
+    return redirect(url_for('index'))
+    # render_template('index.html', led_state=check_led_state(17))
 
 
 @app.route('/ledoff')
 def ledoff():
     GPIO.output(17, False)
-    return render_template('index.html', led_state=check_led_state(17))
+    return redirect(url_for('index'))
+    # render_template('index.htlm', led_state=check_led_state(17))
 
 
 if __name__ == '__main__':
