@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="refresh" content="30">
+    <title>Raspberry Pi - Remote IO Comntroller</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+<!--suppress ALL -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Rasp Pi Outputs On/Off Control</h2>
+            <h3>Python/Flask/GPIO</h3>
+        </div>
+        <div class="col-md-6">
+            <a href="/switch" class="btn btn-warning">switch</a>
+            <a href="/all/off" class="btn btn-danger">All Off</a>
+
+            <a href="/all/on" class="btn btn-primary">All On</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-sm">
+
+                <tr><td><p class="text-right">
+            GPIO 5 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/5" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/5" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 6 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/6" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/6" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 9 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-success"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/9" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/9" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 10 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/10" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/10" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 11 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/11" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/11" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 13 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/13" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/13" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 17 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/17" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/17" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 22 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/22" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/22" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+                <tr><td><p class="text-right">
+            GPIO 27 State</p></td>
+                <td><p class="text-left">
+
+                    <button type="button" class="btn btn-danger"></button>
+
+            </p>
+                </td>
+                <td><p class="text-left">
+                    <a href="/gpioon/27" class="btn btn-primary">On</a>
+                    <a href="/gpiooff/27" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
+                </tr>
+
+    </table>
+        </div>
+
+    </div>
+
+
+
+    <div class="well"><p class="text-center">&copy; Chris Hawkins 2018</p></div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

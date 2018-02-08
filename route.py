@@ -55,7 +55,7 @@ gpio_path = "/sys/class/gpio/gpio{}/value"
 
 
 def check_gpio_state(pin):
-    """ Checks and returns output state
+    """ Read value file (one character) for either 0 or a 1
     """
     try:
         with open(gpio_path.format(pin)) as gpiopin:
@@ -67,7 +67,7 @@ def check_gpio_state(pin):
 
 
 def check_all_gpios():
-    """
+    """ reload dictionary of GPIO's statues T or F
     """
     global gpio_pin_state
     gpio_pin_state = {}
@@ -77,14 +77,14 @@ def check_all_gpios():
 
 
 def allonoroff(state):
-    """
+    """ Set all GPIOs dictionary to either T or F
     """
     for pin in GPIO_PINS:
         GPIO.output(pin, state)
 
 
 def swap_states():
-    """
+    """ flip state of all GPIO's to their opposite state
     """
     for pin in GPIO_PINS:
         GPIO.output(pin, not check_gpio_state(pin))
@@ -92,7 +92,6 @@ def swap_states():
 
 @app.route('/')
 def index():
-    # led_state = GPIO.output(17)
     check_all_gpios()
     return render_template('index.html', gpio_pin_state=gpio_pin_state)
 
