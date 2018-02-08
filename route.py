@@ -31,44 +31,65 @@ app = Flask('__name__')
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-GPIO.setup(17, GPIO.OUT)
+
+LEDS_PINS = [17, 27, 22, 10, 9, 11, 5, 6, 13]
+d = {}
+
+def setupleds():
+    """ Setup GPIOs for LEDS.
+    """
+    for led in LEDS_PINS:
+        GPIO.setup(led, GPIO.OUT)
+
+setupleds()
+
 GPIO.setup(2, GPIO.OUT)
 GPIO.output(2, False)
 
-# ledpath = "/sys/class/gpio/gpio17/value"
-ledpath = "/home/chris/repos/flaskapp/value"
+ledpath = "/sys/class/gpio/gpio{}/value"
+# ledpath = "/home/chris/repos/flaskapp/value"
 
 def check_led_state(pin):
     """
     Checks and returns LED output state
     """
     try:
-        with open(ledpath) as inp:
+        with open(ledpath.format(pin)) as inp:
             status = inp.read(1)
             print ("inp = {}".format(status))
+            print (ledpath.format(pin))
     except Exception:
         status = 0
 
 
     return True if status == "1" else False
 
+def check_LED():
+    global d
+    d = {}
+
+    for pin in LEDS_PINS:
+        d[pin] = check_led_state(pin)
+    print (d)
 
 @app.route('/')
 def index():
     # led_state = GPIO.output(17)
-    return render_template('index.html', led_state=check_led_state(17))
+    check_LED()
+    return render_template('index.html', d=d)
 
 
-@app.route('/ledon')
-def ledon():
-    GPIO.output(17, True)
+@app.route('/ledon/<int:led_pin>')
+def ledon(led_pin):
+    GPIO.output(led_pin, True)
     return redirect(url_for('index'))
     # render_template('index.html', led_state=check_led_state(17))
 
 
-@app.route('/ledoff')
-def ledoff():
-    GPIO.output(17, False)
+@app.route('/ledoff/<int:led_pin>')
+def ledoff(led_pin):
+    print ('led off {}'.format(led_pin))
+    GPIO.output(led_pin, False)
     return redirect(url_for('index'))
     # render_template('index.htlm', led_state=check_led_state(17))
 
