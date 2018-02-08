@@ -38,27 +38,27 @@ GPIO_PINS = [17, 27, 22, 10, 9, 11, 5, 6, 13]
 gpio_pin_state = {}
 
 
-def setupleds():
-    """ Setup GPIOs for LEDS.
+def setup_outputs():
+    """ Setup GPIOs for outputs.
     """
     for pin in GPIO_PINS:
         GPIO.setup(pin, GPIO.OUT)
 
 
-setupleds()
+setup_outputs()
 
 GPIO.setup(2, GPIO.OUT)
 GPIO.output(2, False)
 
-ledpath = "/sys/class/gpio/gpio{}/value"
-# ledpath = "/home/chris/repos/flaskapp/value"
+gpio_path = "/sys/class/gpio/gpio{}/value"
+# gpio_path = "/home/chris/repos/flaskapp/value"
 
 
 def check_gpio_state(pin):
-    """ Checks and returns LED output state
+    """ Checks and returns output state
     """
     try:
-        with open(ledpath.format(pin)) as gpiopin:
+        with open(gpio_path.format(pin)) as gpiopin:
             status = gpiopin.read(1)
     except Exception:
         status = 0
@@ -83,17 +83,17 @@ def allonoroff(state):
         GPIO.output(pin, state)
 
 
-def oppositesettings():
+def swap_states():
     """
     """
     for pin in GPIO_PINS:
-        GPIO.output(pin, not check_led_state(pin))
+        GPIO.output(pin, not check_gpio_state(pin))
 
 
 @app.route('/')
 def index():
     # led_state = GPIO.output(17)
-    check_gpio_state()
+    check_all_gpios()
     return render_template('index.html', gpio_pin_state=gpio_pin_state)
 
 
@@ -101,19 +101,17 @@ def index():
 def gpioon(gpio_pin):
     GPIO.output(gpio_pin, True)
     return redirect(url_for('index'))
-    # render_template('index.html', led_state=check_led_state(17))
 
 
 @app.route('/gpiooff/<int:gpio_pin>')
 def gpiooff(gpio_pin):
     GPIO.output(gpio_pin, False)
     return redirect(url_for('index'))
-    # render_template('index.htlm', led_state=check_led_state(17))
 
 
 @app.route('/switch')
 def switch():
-    oppositesettings()
+    swap_states()
     return redirect(url_for('index'))
 
 
