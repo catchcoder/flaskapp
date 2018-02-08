@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Raspberry Pi, outputs controlled by web interface (python,flask)
 Info for sysfs: https://www.kernel.org/doc/Documentation/gpio/sysfs.txt
@@ -33,15 +34,15 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 
-LEDS_PINS = [17, 27, 22, 10, 9, 11, 5, 6, 13]
-d = {}
+GPIO_PINS = [17, 27, 22, 10, 9, 11, 5, 6, 13]
+gpio_pin_state = {}
 
 
 def setupleds():
     """ Setup GPIOs for LEDS.
     """
-    for led in LEDS_PINS:
-        GPIO.setup(led, GPIO.OUT)
+    for pin in GPIO_PINS:
+        GPIO.setup(pin, GPIO.OUT)
 
 
 setupleds()
@@ -53,55 +54,59 @@ ledpath = "/sys/class/gpio/gpio{}/value"
 # ledpath = "/home/chris/repos/flaskapp/value"
 
 
-def check_led_state(pin):
-    """
-    Checks and returns LED output state
+def check_gpio_state(pin):
+    """ Checks and returns LED output state
     """
     try:
-        with open(ledpath.format(pin)) as inp:
-            status = inp.read(1)
+        with open(ledpath.format(pin)) as gpiopin:
+            status = gpiopin.read(1)
     except Exception:
         status = 0
 
     return True if status == "1" else False
 
 
-def check_LED():
-    global d
-    d = {}
+def check_all_gpios():
+    """
+    """
+    global gpio_pin_state
+    gpio_pin_state = {}
 
-    for pin in LEDS_PINS:
-        d[pin] = check_led_state(pin)
-    print (d)
+    for pin in GPIO_PINS:
+        gpio_pin_state[pin] = check_gpio_state(pin)
 
 
 def allonoroff(state):
-    for pin in LEDS_PINS:
+    """
+    """
+    for pin in GPIO_PINS:
         GPIO.output(pin, state)
 
 
 def oppositesettings():
-    for pin in LEDS_PINS:
+    """
+    """
+    for pin in GPIO_PINS:
         GPIO.output(pin, not check_led_state(pin))
 
 
 @app.route('/')
 def index():
     # led_state = GPIO.output(17)
-    check_LED()
-    return render_template('index.html', d=d)
+    check_gpio_state()
+    return render_template('index.html', gpio_pin_state=gpio_pin_state)
 
 
-@app.route('/ledon/<int:led_pin>')
-def ledon(led_pin):
-    GPIO.output(led_pin, True)
+@app.route('/gpioon/<int:gpio_pin>')
+def gpioon(gpio_pin):
+    GPIO.output(gpio_pin, True)
     return redirect(url_for('index'))
     # render_template('index.html', led_state=check_led_state(17))
 
 
-@app.route('/ledoff/<int:led_pin>')
-def ledoff(led_pin):
-    GPIO.output(led_pin, False)
+@app.route('/gpiooff/<int:gpio_pin>')
+def gpiooff(gpio_pin):
+    GPIO.output(gpio_pin, False)
     return redirect(url_for('index'))
     # render_template('index.htlm', led_state=check_led_state(17))
 

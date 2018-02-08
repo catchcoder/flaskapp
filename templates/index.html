@@ -1,32 +1,34 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="container">
+<!--suppress ALL -->
+<div class="container">
 
     <div class="row">
-        <div class"col-md-12">
-        <h2>LEDs On/Off Control</h2>
-        <h3>Python/Flask/GPIO</h3>
+        <div class="col-md-12">
+            <h2>LEDs On/Off Control</h2>
+            <h3>Python/Flask/GPIO</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <table class="table table-sm">
-    {% for led, state in d.items() %}
-    <tr><td><p class="text-right">
-            LED {{led}} state</p></td>
-        <td><p class="text-left">
+    {% for pin, state in gpio_pin_state.items() %}
+                <tr><td><p class="text-right">
+            GPIO {{pin}} State</p></td>
+                <td><p class="text-left">
         {% if state %} 
-            <button type="button" class="btn btn-success"></button>
+                    <button type="button" class="btn btn-success"></button>
         {% else %}
-            <button type="button" class="btn btn-danger"></button>
+                    <button type="button" class="btn btn-danger"></button>
         {% endif %}
             </p> 
-        </td>
-        <td><p class="text-center">
-        <a href="{{ url_for('ledon',led_pin=led ) }}" class="btn btn-primary">On</a>
-        <a href="{{ url_for('ledoff',led_pin=led) }}" class="btn btn-secondary">Off</a>
-            </p> </td>
+                </td>
+                <td><p class="text-center">
+                    <a href="{{ url_for('gpioon',gpio_pin=pin ) }}" class="btn btn-primary">On</a>
+                    <a href="{{ url_for('gpiooff',gpio_pin=pin) }}" class="btn btn-secondary">Off</a>
+                    </p>
+                </td>
                 </tr>
     {% endfor %}
     </table>
@@ -36,12 +38,13 @@
             <a href="{{ url_for('all',state='off') }}" class="btn btn-danger">All Off</a>
 
             <a href="{{ url_for('all',state='on') }}" class="btn btn-primary">All On</a>
-
+        </div>
     </div>
 {% endblock %}
 
 {% block footer %}
-<div class="container">
-    <div class="well"><p class="text-center">&copy; Chris Hawkins 2018{</p></div>
-</div>
+
+    <div class="well"><p class="text-center">&copy; Chris Hawkins 2018</p></div>
+
 {% endblock %}
+</div>
