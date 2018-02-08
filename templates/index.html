@@ -6,8 +6,8 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h2>LEDs On/Off Control</h2>
-            <h3>Python/Flask/GPIO</h3>
+            <h2>RPi GPIO control</h2>
+            <h3><small>Python/Flask/GPIO</small></h3>
         </div>
         <div class="col-md-6">
             <a href="{{ url_for('switch')  }}" class="btn btn-warning">switch</a>
@@ -18,11 +18,12 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-sm">
+            <table class="table table-striped">
+                <tbody>
     {% for pin, state in gpio_pin_state.items() %}
                 <tr><td><p class="text-right">
-            GPIO {{pin}} State</p></td>
-                <td><p class="text-left">
+            GPIO {{pin}}</p></td>
+            <td><p class="text-left">
         {% if state %} 
                     <button type="button" class="btn btn-success"></button>
         {% else %}
@@ -30,14 +31,15 @@
         {% endif %}
             </p> 
                 </td>
-                <td><p class="text-center">
+                <td><p class="text-left">
                     <a href="{{ url_for('gpioon',gpio_pin=pin ) }}" class="btn btn-primary">On</a>
                     <a href="{{ url_for('gpiooff',gpio_pin=pin) }}" class="btn btn-secondary">Off</a>
                     </p>
                 </td>
                 </tr>
     {% endfor %}
-    </table>
+                </tbody>
+            </table>
         </div>
 
     </div>
@@ -45,7 +47,7 @@
 
 {% block footer %}
 
-    <div class="well"><p class="text-center">&copy; Chris Hawkins 2018</p></div>
+    <div class="footer"><p class="text-center">&copy; Chris Hawkins 2018</p></div>
 
 {% endblock %}
 </div>
