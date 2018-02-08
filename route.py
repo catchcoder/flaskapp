@@ -7,6 +7,7 @@ https://elinux.org/RPi_Low-level_peripherals
 from flask import Flask, render_template, request, redirect, url_for
 import time
 import os
+from datetime import datetime
 # import sqlite3
 from RPi import GPIO
 
@@ -35,11 +36,13 @@ GPIO.setwarnings(False)
 LEDS_PINS = [17, 27, 22, 10, 9, 11, 5, 6, 13]
 d = {}
 
+
 def setupleds():
     """ Setup GPIOs for LEDS.
     """
     for led in LEDS_PINS:
         GPIO.setup(led, GPIO.OUT)
+
 
 setupleds()
 
@@ -49,6 +52,7 @@ GPIO.output(2, False)
 ledpath = "/sys/class/gpio/gpio{}/value"
 # ledpath = "/home/chris/repos/flaskapp/value"
 
+
 def check_led_state(pin):
     """
     Checks and returns LED output state
@@ -56,13 +60,11 @@ def check_led_state(pin):
     try:
         with open(ledpath.format(pin)) as inp:
             status = inp.read(1)
-            print ("inp = {}".format(status))
-            print (ledpath.format(pin))
     except Exception:
         status = 0
 
-
     return True if status == "1" else False
+
 
 def check_LED():
     global d
@@ -71,6 +73,17 @@ def check_LED():
     for pin in LEDS_PINS:
         d[pin] = check_led_state(pin)
     print (d)
+
+
+def allonoroff(state):
+    for pin in LEDS_PINS:
+        GPIO.output(pin, state)
+
+
+def oppositesettings():
+    for pin in LEDS_PINS:
+        GPIO.output(pin, not check_led_state(pin))
+
 
 @app.route('/')
 def index():
@@ -88,10 +101,24 @@ def ledon(led_pin):
 
 @app.route('/ledoff/<int:led_pin>')
 def ledoff(led_pin):
-    print ('led off {}'.format(led_pin))
     GPIO.output(led_pin, False)
     return redirect(url_for('index'))
     # render_template('index.htlm', led_state=check_led_state(17))
+
+
+@app.route('/switch')
+def switch():
+    oppositesettings()
+    return redirect(url_for('index'))
+
+
+@app.route('/all/<state>')
+def all(state):
+    if state == "off":
+        allonoroff(False)
+    else:
+        allonoroff(True)
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
