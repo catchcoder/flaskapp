@@ -98,13 +98,15 @@ def index():
 
 @app.route('/gpioon/<int:gpio_pin>')
 def gpioon(gpio_pin):
-    GPIO.output(gpio_pin, True)
+    if gpio_pin in GPIO_PINS:
+        GPIO.output(gpio_pin, True)
     return redirect(url_for('index'))
 
 
 @app.route('/gpiooff/<int:gpio_pin>')
 def gpiooff(gpio_pin):
-    GPIO.output(gpio_pin, False)
+    if gpio_pin in GPIO_PINS:
+        GPIO.output(gpio_pin, False)
     return redirect(url_for('index'))
 
 
